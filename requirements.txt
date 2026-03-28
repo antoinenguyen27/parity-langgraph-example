@@ -1,0 +1,8 @@
+langchain
+langchain-community
+langchain-openai
+langchain-text-splitters
+langgraph
+bs4
+python-dotenv
+probegen

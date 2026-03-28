@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "run_id": "stage1-demo",
+  "pr_number": 17,
+  "commit_sha": "deadbeef",
+  "timestamp": "2026-03-14T05:00:00Z",
+  "has_changes": true,
+  "overall_risk": "medium",
+  "pr_intent_summary": "Add citation instructions to the answer generation prompt to improve source attribution and answer transparency",
+  "pr_description_alignment": "confirmed",
+  "compound_change_detected": false,
+  "changes": [
+    {
+      "artifact_path": "app/graph.py",
+      "artifact_type": "python_variable",
+      "artifact_class": "behavior_defining",
+      "change_type": "modification",
+      "inferred_intent": "Instruct the generator to cite the source blog post for each claim, and to avoid fabricating a source when the origin cannot be determined from the retrieved text",
+      "pr_description_alignment": "confirmed",
+      "unintended_risk_flags": [
+        "Retrieved context is assembled from raw page_content only — source metadata (URL, title) is not passed to the generator. The model must infer blog post identity from chunk text alone, and may fabricate or misattribute citations when chunks are ambiguous.",
+        "The citation instruction adds prose to each answer, which may conflict with the existing three-sentence conciseness constraint for responses that cover multiple claims."
+      ],
+      "affected_components": [
+        "app/graph.py::generate_answer"
+      ],
+      "false_negative_risks": [],
+      "false_positive_risks": [],
+      "change_summary": "GENERATE_PROMPT gained two sentences requiring per-claim citation of source blog posts and prohibiting fabricated sources when the origin cannot be determined",
+      "before_hash": "sha256:aaa",
+      "after_hash": "sha256:bbb"
+    }
+  ],
+  "compound_changes": []
+}

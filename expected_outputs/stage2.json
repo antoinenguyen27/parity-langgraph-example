@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "run_id": "stage2-demo",
+  "stage1_run_id": "stage1-demo",
+  "timestamp": "2026-03-14T05:01:00Z",
+  "unmapped_artifacts": [],
+  "coverage_summary": {
+    "total_relevant_cases": 5,
+    "cases_covering_changed_behavior": 0,
+    "coverage_ratio": 0.0,
+    "platform": "langsmith",
+    "dataset": "lilian-weng-rag-baseline",
+    "mode": "coverage_aware",
+    "corpus_status": "available",
+    "bootstrap_reason": null
+  },
+  "gaps": [
+    {
+      "gap_id": "gap_001",
+      "artifact_path": "app/graph.py",
+      "gap_type": "uncovered",
+      "related_risk_flag": "Retrieved context is assembled from raw page_content only — source metadata (URL, title) is not passed to the generator. The model must infer blog post identity from chunk text alone, and may fabricate or misattribute citations when chunks are ambiguous.",
+      "description": "No baseline case checks whether generated answers include a citation, or whether any citation present is accurate. All existing evaluators assert correctness of factual content but have no rubric for citation presence or attribution. Under the new GENERATE_PROMPT, the model will attempt to name source blog posts from raw chunk text — a behavior that is entirely untested.",
+      "nearest_existing_cases": [
+        {
+          "case_id": "lilian-reward-hacking-types",
+          "input_normalized": "What does Lilian Weng say about types of reward hacking?",
+          "similarity": 0.71,
+          "classification": "related"
+        }
+      ],
+      "priority": "high",
+      "guardrail_direction": null,
+      "is_conversational": false
+    },
+    {
+      "gap_id": "gap_002",
+      "artifact_path": "app/graph.py",
+      "gap_type": "boundary_shift",
+      "related_risk_flag": "Retrieved context is assembled from raw page_content only — source metadata (URL, title) is not passed to the generator. The model must infer blog post identity from chunk text alone, and may fabricate or misattribute citations when chunks are ambiguous.",
+      "description": "No baseline case tests citation accuracy when retrieved chunks span multiple blog posts in a single response. The retriever may surface passages from the hallucination and reward-hacking posts together. Without source metadata, the model must attribute each claim to the correct post from text cues alone — a cross-post attribution scenario that has no existing coverage.",
+      "nearest_existing_cases": [
+        {
+          "case_id": "lilian-diffusion-lumiere",
+          "input_normalized": "How does Lumiere differ from cascade-based video generation approaches like Imagen Video?",
+          "similarity": 0.63,
+          "classification": "related"
+        }
+      ],
+      "priority": "high",
+      "guardrail_direction": null,
+      "is_conversational": false
+    },
+    {
+      "gap_id": "gap_003",
+      "artifact_path": "app/graph.py",
+      "gap_type": "uncovered",
+      "related_risk_flag": "Retrieved context is assembled from raw page_content only — source metadata (URL, title) is not passed to the generator. The model must infer blog post identity from chunk text alone, and may fabricate or misattribute citations when chunks are ambiguous.",
+      "description": "No baseline case tests the model's behavior when chunk text does not contain enough internal signal to identify its source blog post. The model is instructed not to fabricate a citation, but no existing case verifies it actually refrains — or that it does not silently produce a vague placeholder such as 'the blog post' that satisfies the instruction syntactically but provides no useful attribution.",
+      "nearest_existing_cases": [
+        {
+          "case_id": "lilian-unsupported-moe",
+          "input_normalized": "What does Lilian Weng say about mixture-of-experts architectures?",
+          "similarity": 0.58,
+          "classification": "related"
+        }
+      ],
+      "priority": "medium",
+      "guardrail_direction": null,
+      "is_conversational": false
+    }
+  ]
+}
